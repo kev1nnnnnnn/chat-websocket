@@ -1,0 +1,5 @@
+frameworks -> npm install express socket.io
+
+dependencias -> yarn add @types/express @types/socket.io -D
+
+yarn dev -> para rodar o servidor
