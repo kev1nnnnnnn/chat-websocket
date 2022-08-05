@@ -1,15 +1,17 @@
 body {
     outline: none;
     cursor: pointer;
+   background-color: #000;
   }
-  
+.chat_content {
+  overflow: scroll;
+}
   form {
     display: flex;
     flex-direction: row;
-  
-    margin: 10px;
-    padding: 5px;
-  
+    justify-content: center;
+    align-items: center;
+    padding: 5px;  
     margin-top: 140px;
   }
   
@@ -44,12 +46,33 @@ body {
   
   .container {
     display: flex;
+    width: 30%;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    background-color: #012026;
+    padding: 50px;
+    border-radius: 10px;
+
+  }
+  .containerChat {
+    display: flex;
     width: 100%;
     flex-direction: column;
     align-items: center;
     margin-top: 10px;
   }
+  .messages {
+    color: #f5f5f5;
+    font-family: sans-serif;
+    border-bottom: 1px solid #f5f5f5;
+    
+   
+  }
   
+  #data {
+    float: right;
+  }
   .new_message {
     padding: 5px;
   }
@@ -62,3 +85,22 @@ body {
     background: rgb(56, 3, 3);
     cursor: pointer;
   }
+  .form-label {
+    color: #f5f5f5;
+    font-family: sans-serif;
+    font-size: 15px;
+    padding-bottom: 10px;
+  }
+  #username {
+    color: #f5f5f5;
+    margin-top: 1em;
+    font-family: sans-serif;
+  }
+
+strong {
+  color: #00f777;
+  margin-top: 1em;
+}
+.welcome {
+  color: #00f777;
+}

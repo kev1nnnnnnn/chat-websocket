@@ -38,6 +38,14 @@ var compileExtensions = ['.ts', '.tsx'];
 var cwd = process.cwd();
 var compilationInstanceStamp = Math.random().toString().slice(2);
 var originalJsHandler = require.extensions['.js'];
+var parse = function (value) {
+    return typeof value === 'string' ? JSON.parse(value) : undefined;
+};
+function split(value) {
+    return typeof value === 'string'
+        ? value.split(/ *, */g).filter(function (v) { return v !== ''; })
+        : undefined;
+}
 exports.makeCompiler = function (options, _a) {
     var log = _a.log, restart = _a.restart;
     var _errorCompileTimeout;
@@ -163,29 +171,28 @@ exports.makeCompiler = function (options, _a) {
         var scriptPath = options._.length
             ? path_1.default.resolve(cwd, options._[0])
             : undefined;
-        var DEFAULTS = tsNode.DEFAULTS;
         tsNode.register({
             // --dir does not work (it gives a boolean only) so we only check for script-mode
             dir: get_cwd_1.getCwd(options['dir'], options['script-mode'], scriptPath),
-            scope: options['scope'] || DEFAULTS.scope,
-            emit: options['emit'] || DEFAULTS.emit,
-            files: options['files'] || DEFAULTS.files,
-            pretty: options['pretty'] || DEFAULTS.pretty,
-            transpileOnly: options['transpile-only'] || DEFAULTS.transpileOnly,
-            ignore: options['ignore']
-                ? tsNode.split(options['ignore'])
-                : DEFAULTS.ignore,
-            preferTsExts: options['prefer-ts-exts'] || DEFAULTS.preferTsExts,
-            logError: options['log-error'] || DEFAULTS.logError,
+            scope: options['scope'],
+            scopeDir: options['scopeDir'],
+            emit: options['emit'],
+            files: options['files'],
+            pretty: options['pretty'],
+            transpileOnly: options['transpile-only'],
+            ignore: options['ignore'] ? split(options['ignore']) : undefined,
+            preferTsExts: options['prefer-ts-exts'],
+            logError: options['log-error'],
             project: options['project'],
             skipProject: options['skip-project'],
+            transpiler: options['transpiler'],
             skipIgnore: options['skip-ignore'],
-            compiler: options['compiler'] || DEFAULTS.compiler,
-            compilerHost: options['compiler-host'] || DEFAULTS.compilerHost,
+            compiler: options['compiler'],
+            compilerHost: options['compiler-host'],
             ignoreDiagnostics: options['ignore-diagnostics']
-                ? tsNode.split(options['ignore-diagnostics'])
-                : DEFAULTS.ignoreDiagnostics,
-            compilerOptions: tsNode.parse(options['compiler-options']),
+                ? split(options['ignore-diagnostics'])
+                : undefined,
+            compilerOptions: parse(options['compiler-options']),
         });
     };
     var compiler = {
@@ -246,7 +253,11 @@ exports.makeCompiler = function (options, _a) {
             }
             catch (e) {
                 console.error('Compilation error in', fileName);
-                var errorCode = 'throw ' + 'new Error(' + JSON.stringify(e.message) + ')' + ';';
+                var errorCode = 'throw ' +
+                    'new Error(' +
+                    JSON.stringify(e.message) +
+                    ')' +
+                    ';';
                 writeCompiled(errorCode);
                 // reinitialize ts-node compilation to clean up state after error
                 // without timeout in causes cases error not be printed out

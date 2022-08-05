@@ -8,7 +8,7 @@ const room = urlSearch.get("select_room");
 //on => escutando alguma informação
 
 const usernameDiv = document.getElementById("username");
-usernameDiv.innerHTML = `Olá ${username} - você está na sala ${room}`
+usernameDiv.innerHTML = `Olá ${username} - você está na sala: <span class="welcome">${room}</span>`
 
 socket.emit("select_room", {
     username,
@@ -48,8 +48,8 @@ function createMessage(data) {
     messageDiv.innerHTML += `
     <div class="messages" id="messages">
             <div class="new_message">
-              <label for="" class="form-label"></label>
-              <strong>${data.username}</strong> <span>${data.text} - ${dayjs(data.createdAt).format("DD/MM HH:mm")}</span>
+              <label for="class="form-label"></label>
+              <strong>${data.username}</strong>:<span> ${data.text}</span> <span id="data"> ${dayjs(data.createdAt).format("DD/MM HH:mm")}</span>
             </div>
           </div>
     `;

@@ -48,6 +48,8 @@ var tsNodeFlags = {
         'ignore',
         'ignore-diagnostics',
         'compiler-options',
+        'scopeDir',
+        'transpiler'
     ],
 };
 var tsNodeAlias = {
